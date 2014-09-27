@@ -5,9 +5,9 @@
     var multitasker = {};
 
     // wraps a multitask and renames it, providing a default target or set of targets
-    multitasker.setDefaultTargets = function(task, targets, renameTo) {
-      if (renameTo === null) {
-        renameTo = taskName + (options.renameSuffix || '-base');
+    multitasker.setDefaultTargets = function(task, targets, newName) {
+      if (!newName) {
+        newName = task + (options.renameSuffix || '-base');
       }
 
       if (!grunt.task.exists(task)) {
@@ -27,22 +27,23 @@
         }
       });
 
-      grunt.task.renameTask(task, renameTo);
+      grunt.task.renameTask(task, newName);
+      grunt.config(newName, grunt.config(task));
       grunt.registerTask(task, function(requestedTarget) {
         if (!requestedTarget || requestedTarget == 'default') {
           targets.forEach(function(target) {
-            grunt.task.run(rename + ':' + target);
+            grunt.task.run(newName + ':' + target);
           });
         }
         else {
-          grunt.task.run(rename + ':' + requestedTarget);
+          grunt.task.run(newName + ':' + requestedTarget);
         }
       });
     };
 
     // registers a task that calls a different alias based on a target
     multitasker.registerMultiAliasTask = function(name, info, tasks) {
-      if (tasks === null) {
+      if (!tasks) {
         tasks = info;
         info = 'Custom simple multi task.';
       }
@@ -66,12 +67,13 @@
 
       grunt.registerTask(name, info, function(target) {
         target = target || 'default';
+
         if (!tasks[target]) {
           throw grunt.util.error('invalid target: ' + target);
         }
 
         // allows for declaration of a 'default' target to call, rather than calling all of them.
-        if (target !== 'default' || targets.default) {
+        if (target !== 'default' || tasks.default) {
           grunt.task.run(tasks[target]);
         }
         else {

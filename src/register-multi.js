@@ -1,6 +1,6 @@
 // registers a task that calls a different alias based on a target
 multitasker.registerMultiAliasTask = function(name, info, tasks) {
-  if (tasks === null) {
+  if (!tasks) {
     tasks = info;
     info = 'Custom simple multi task.';
   }
@@ -24,12 +24,13 @@ multitasker.registerMultiAliasTask = function(name, info, tasks) {
 
   grunt.registerTask(name, info, function(target) {
     target = target || 'default';
+
     if (!tasks[target]) {
       throw grunt.util.error('invalid target: ' + target);
     }
 
     // allows for declaration of a 'default' target to call, rather than calling all of them.
-    if (target !== 'default' || targets.default) {
+    if (target !== 'default' || tasks.default) {
       grunt.task.run(tasks[target]);
     }
     else {

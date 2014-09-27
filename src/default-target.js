@@ -1,7 +1,7 @@
 // wraps a multitask and renames it, providing a default target or set of targets
-multitasker.setDefaultTargets = function(task, targets, renameTo) {
-  if (renameTo === null) {
-    renameTo = taskName + (options.renameSuffix || '-base');
+multitasker.setDefaultTargets = function(task, targets, newName) {
+  if (!newName) {
+    newName = task + (options.renameSuffix || '-base');
   }
 
   if (!grunt.task.exists(task)) {
@@ -21,15 +21,16 @@ multitasker.setDefaultTargets = function(task, targets, renameTo) {
     }
   });
 
-  grunt.task.renameTask(task, renameTo);
+  grunt.task.renameTask(task, newName);
+  grunt.config(newName, grunt.config(task));
   grunt.registerTask(task, function(requestedTarget) {
     if (!requestedTarget || requestedTarget == 'default') {
       targets.forEach(function(target) {
-        grunt.task.run(rename + ':' + target);
+        grunt.task.run(newName + ':' + target);
       });
     }
     else {
-      grunt.task.run(rename + ':' + requestedTarget);
+      grunt.task.run(newName + ':' + requestedTarget);
     }
   });
 };
