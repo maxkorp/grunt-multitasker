@@ -6,10 +6,10 @@
     require('load-grunt-tasks')(grunt);
 
     var files = [
-    'src/pre.js',
-    'src/default-target.js',
-    'src/register-multi.js',
-    'src/post.js'
+      'src/pre.js',
+      'src/default-target.js',
+      'src/register-multi.js',
+      'src/post.js'
     ];
 
     grunt.initConfig({

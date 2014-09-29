@@ -30,6 +30,11 @@ require('grunt-multitasker')(grunt, true);
 
 The helper has several functions to aid in simplifying building tasks
 
+##Note
+If you use the `load-grunt-tasks` module, take care to exclude grunt-multitasker from its globbing patterns. By default
+it will load tasks for any module matching grunt-*, which causes a warning in the grunt output. The registered tasks
+should still work however
+
 #### Creating a simple multitask
 A standard grunt task can be registered with an alias, which is simply an array of other tasks
 to execute, like so:
