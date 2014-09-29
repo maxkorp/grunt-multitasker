@@ -1,7 +1,7 @@
 {
   "name": "grunt-multitasker",
   "description": "functions to help manipulate grunt tasks",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/maxkorp/grunt-multitasker",
   "author": {
     "name": "Max Korp",
